@@ -17,9 +17,13 @@ errorMenuTramos: Integer;
 boletos: integer;
 opMenuCantBoletosstr: string;
 opMenuCantBoletosint: integer;
-opMenuTipoBoletos: string;
 precioboleto: integer;
 errorCantBoletos: integer;
+//Tipos de boletos
+tipoBoletoUno: integer;
+tipoBoletoDos: integer;
+tipoBoletoTres: integer;
+opMenuTipoBoletos: string;
 //Ganancia 
 Ganancia: real;
 //Precio 1 Compra
@@ -40,6 +44,9 @@ begin
 Ganancia:= 0;
 asientosDisponibles:= 60;
 boletos:= 0;
+tipoBoletoUno:= 0;
+tipoBoletoDos:= 0;
+tipoBoletoTres:= 0;
 
 //Iniciar Variables
 precio:= 0;
@@ -135,7 +142,7 @@ precioAcumulado:= 0;
             repeat
               writeln('|--------------------------------------|');
               writeln('|                                      |');
-              writeln('|   El teleferico tiene una capacidad  |');
+              writeln('|   El teleférico tiene una capacidad  |');
               writeln('|        de 60 personas por viaje      |');
               writeln('|    ¿Cuántos Boletos de este tipo     |');
               writeln('|            desea comprar?            |');
@@ -163,6 +170,14 @@ precioAcumulado:= 0;
                   precioAcumulado:= precioAcumulado+precio;
                   asientosDisponibles:= asientosDisponibles-opMenuCantBoletosint;
                   boletos:= boletos+opMenuCantBoletosint;
+                  case (opMenuTipoBoletos) of
+                  '1': 
+                  tipoBoletoUno:= tipoBoletoUno+opMenuCantBoletosint;
+                  '2':
+                  tipoBoletoDos:= tipoBoletoDos+opMenuCantBoletosint;
+                  '3':
+                  tipoBoletoTres:= tipoBoletoTres+opMenuCantBoletosint;
+                  end;
                   Break;
                 end
 
@@ -206,8 +221,12 @@ precioAcumulado:= 0;
                   writeln('|--------------------------------------|');
                   writeln('|                                      |');
                   writeln('|   La cantidad de boletos vendidos    |');
-                  writeln('|   Es: ',boletos,'                             |');
-                  writeln('|                                      |');
+                  writeln('|   Es: ',boletos,'                              |');
+                  writeln('|   Ventas por tipo de boleto          |');
+                  writeln('|   1. Boleto General:', tipoBoletoUno,'                |');
+                  writeln('|   2. Tercera edad y niños de         |');
+                  writeln('|   3 a 12 años:', tipoBoletoDos,'                      |');
+                  writeln('|   3. Niños menores de 3 años:', tipoBoletoTres,'       |');
                   writeln('|--------------------------------------|');
                 end;
                 '2':
@@ -215,9 +234,9 @@ precioAcumulado:= 0;
                   textcolor (lightblue);
                   writeln('|--------------------------------------|');
                   writeln('|                                      |');
-                  writeln('|  La cantidad de asientos disponibles |');
+                  writeln('| La cantidad de asientos disponibles  |');
                   writeln('|  Es:                                 |');
-                  writeln('|       ', asientosDisponibles,'                         |');
+                  writeln('|       ', asientosDisponibles,'                             |');
                   writeln('|--------------------------------------|');
                 end; 
                 '3':
@@ -227,7 +246,7 @@ precioAcumulado:= 0;
                   writeln('|                                      |');
                   writeln('|  La ganancia del día es              |');
                   writeln('|  Es:                                 |');
-                  writeln('|       ', Ganancia:0:0, '$','                            |');
+                  writeln('|       ', Ganancia:0:0, '$','                             |');
                   writeln('|--------------------------------------|');
                 end; 
               end;  
