@@ -7,8 +7,6 @@ var
 estacionesStr: array[1..4] of string;
 //Menu inicial
 opMenuIni: string;
-//Contadores
-totalAsientos: Integer;
 //Datos del Usuario
 name, CI: string;
 //Tramos
@@ -16,7 +14,7 @@ opMenuTramos: Integer;
 opMenuTramosStr: String;
 errorMenuTramos: Integer;
 //Cantidad de boletos comprados 1 vez
-boletos: string;
+boletos: integer;
 opMenuCantBoletosstr: string;
 opMenuCantBoletosint: integer;
 opMenuTipoBoletos: string;
@@ -29,7 +27,8 @@ precio: real;
 precioAcumulado: real;
 //Menu ventas
 opMenuVentas: string;
-asientosDisponibles: real;
+//Asientos
+asientosDisponibles: integer;
 begin
 //Iniciar array
 	estacionesStr[1]:= 'La montaña';
@@ -39,7 +38,8 @@ begin
 	
 //Iniciar el contador
 Ganancia:= 0;
-totalAsientos:= 60;
+asientosDisponibles:= 60;
+boletos:= 0;
 
 //Iniciar Variables
 precio:= 0;
@@ -83,7 +83,7 @@ precioAcumulado:= 0;
         //Solicitando a que estacion desea ir
         repeat
         writeln('|---------------------------------------|');
-        writeln('|   Estas en la estacion Barinitas      |');
+        writeln('|     Estas en la estacion Barinitas    |');
         writeln('|   ¿Hasta que estación quiere llegar?  |');
         writeln('|    1. La montaña                      |');
         writeln('|    2. La Aguada                       |');
@@ -101,63 +101,83 @@ precioAcumulado:= 0;
           writeln('|                                      |');
           writeln('|--------------------------------------|');   
         until((errorMenuTramos=0) and ((opMenuTramos>0) and (opMenuTramos<5)));
+        writeln('Ha selecconado la estación ',estacionesStr[opMenuTramos],' por lo que recorrerá ',opMenuTramos, ' estaciones');
         //Solicitar la informacion de cuantos boletos quiere comprar y de que tipo
         repeat
-          writeln('Ha selecconado la estación ',estacionesStr[opMenuTramos],' por lo que recorrerá ',opMenuTramos, ' estaciones');
-          writeln('|---------------------------------------|');
-          writeln('|                                       |');
-          writeln('|  ¿Qué tipo de Boletos desea comprar?  |');
-          writeln('|    1. Boleto General: 5$ por tramo    |');
-          writeln('|    2. Tercera edad y niños de         |');
-          writeln('|       3 a 12 años: 3$ por tramo       |');
-          writeln('|    3. Niños menores de 3 años         |');
-          writeln('|       exonerados sin embargo, solo    |');
-          writeln('|       pueden subir hasta Loma Redonda |');
-          writeln('|    4. No deseo comprar mas            |');
-          writeln('|                                       |');
-          writeln('|---------------------------------------|');
-          readln(opMenuTipoBoletos);
-          ClrScr;
-          case (opMenuTipoBoletos) of
-          '1':
-          precioboleto:= 5;
-          '2': 
-          precioboleto:= 3;
-          '3':
-          precioboleto:= 0;
-          '4':
-          break;
-          end;
+          repeat
+            writeln('|---------------------------------------|');
+            writeln('|                                       |');
+            writeln('|  ¿Qué tipo de Boletos desea comprar?  |');
+            writeln('|    1. Boleto General: 5$ por tramo    |');
+            writeln('|    2. Tercera edad y niños de         |');
+            writeln('|       3 a 12 años: 3$ por tramo       |');
+            writeln('|    3. Niños menores de 3 años         |');
+            writeln('|       exonerados sin embargo, solo    |');
+            writeln('|       pueden subir hasta Loma Redonda |');
+            writeln('|    4. No deseo comprar mas            |');
+            writeln('|                                       |');
+            writeln('|---------------------------------------|');
+            readln(opMenuTipoBoletos);
+            ClrScr;
+            case (opMenuTipoBoletos) of
+            '1':
+            precioboleto:= 5;
+            '2': 
+            precioboleto:= 3;
+            '3':
+            precioboleto:= 0;
+            '4':
+            break;
+            end;
+          until((opMenuTipoBoletos='1')or(opMenuTipoBoletos='2')or(opMenuTipoBoletos='3')or(opMenuTipoBoletos='4'));
+          if (opMenuTipoBoletos='4') then
+            break;
             repeat
-                  writeln('|--------------------------------------|');
-                  writeln('|                                      |');
-                  writeln('|    ¿Cuántos Boletos de este tipo     |');
-                  writeln('|            desea comprar?            |');
-                  writeln('|                                      |');
-                  writeln('|--------------------------------------|');
-                  readln(opMenuCantBoletosstr);
-                ClrScr;
-                val(opMenuCantBoletosstr, opMenuCantBoletosint, errorCantBoletos);
-                if (errorCantBoletos <> 0) then
-              repeat     
-                  begin
+              writeln('|--------------------------------------|');
+              writeln('|                                      |');
+              writeln('|   El teleferico tiene una capacidad  |');
+              writeln('|        de 60 personas por viaje      |');
+              writeln('|    ¿Cuántos Boletos de este tipo     |');
+              writeln('|            desea comprar?            |');
+              writeln('|                                      |');
+              writeln('|--------------------------------------|');
+              readln(opMenuCantBoletosstr);
+              ClrScr;
+              val(opMenuCantBoletosstr, opMenuCantBoletosint, errorCantBoletos);
+              if (errorCantBoletos <> 0) then
+                begin
+                  repeat     
                     writeln('|--------------------------------------|');
                     writeln('|                                      |');
                     writeln('|     Ingrese una Cantidad Valida      |');
                     writeln('|                                      |');
-                    writeln('|--------------------------------------|');   
+                    writeln('|--------------------------------------|');
+                    readln(opMenuCantBoletosstr);
+                    val(opMenuCantBoletosstr, opMenuCantBoletosint, errorCantBoletos);
+                    ClrScr;
+                  until(errorCantBoletos=0);
                   end;
-              until(errorCantBoletos=0);
-              precio:= opMenuCantBoletosint*opMenuTramos*precioboleto;
-              precioAcumulado:= precioAcumulado+precio;
-              if (opMenuCantBoletosint > totalAsientos) then
+              if (opMenuCantBoletosint<asientosDisponibles) then
                 begin
-                  asientosDisponibles:= totalAsientos - opMenuCantBoletosint;
-                  writeln ('La cantidad de asientos solicitados excede el número de asientos disponibles');
+                  precio:= opMenuCantBoletosint*opMenuTramos*precioboleto;
+                  precioAcumulado:= precioAcumulado+precio;
+                  asientosDisponibles:= asientosDisponibles-opMenuCantBoletosint;
+                  boletos:= boletos+opMenuCantBoletosint;
+                  Break;
+                end
+
+              else if (opMenuCantBoletosint > asientosDisponibles) then
+                begin
+                  writeln('|--------------------------------------|');
+                  writeln('|                                      |');
+                  writeln('|   La cantidad de asientos a comprar  |');
+                  writeln('|   no puede ser mayor a los asientos  |');
+                  writeln('|             disponibles.             |');
+                  writeln('|                                      |');
+                  writeln('|--------------------------------------|');   
                 end;
             until (opMenuCantBoletosint < asientosDisponibles);
-          //ACA FALTA DE TODO UN POCO, FALTA SUMAR EL PRECIO, AGG UNA CONDICION DE QUE SI LA CANTIDAD DE ASIENTOS A COMPRAR ES 
-          //MAYOR A A LOS DISPONIBLES DE ERROR, FALTA SUMAR EL DINERO Y PEDIR QUE ESTACION DESEA IR, CUALQUIER DUDA ME ESCRIBES
+
         until (opMenuTipoBoletos='4');
         writeln('El total a pagar es de ',precioAcumulado:0:0,'$');
         Ganancia:= Ganancia+precioAcumulado;
@@ -176,6 +196,7 @@ precioAcumulado:= 0;
             writeln('|    2. Asientos disponibles            |');
             writeln('|    3. Reporte del día                 |');
             writeln('|    4. Volver a menú inicial           |');
+            writeln('|                                       |');
             writeln('|---------------------------------------|');
             readln(opMenuVentas);
               case (opMenuVentas) of
@@ -185,7 +206,7 @@ precioAcumulado:= 0;
                   writeln('|--------------------------------------|');
                   writeln('|                                      |');
                   writeln('|   La cantidad de boletos vendidos    |');
-                  writeln('|   Es:                                |');
+                  writeln('|   Es: ',boletos,'                             |');
                   writeln('|                                      |');
                   writeln('|--------------------------------------|');
                 end;
@@ -196,7 +217,7 @@ precioAcumulado:= 0;
                   writeln('|                                      |');
                   writeln('|  La cantidad de asientos disponibles |');
                   writeln('|  Es:                                 |');
-                  writeln('|       ', asientosDisponibles:0:0,'                 |');
+                  writeln('|       ', asientosDisponibles,'                         |');
                   writeln('|--------------------------------------|');
                 end; 
                 '3':
