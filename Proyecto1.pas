@@ -90,9 +90,9 @@ precioAcumulado:= 0;
         //Solicitando a que estacion desea ir
         repeat
         writeln('|---------------------------------------|');
-        writeln('|     Estas en la estacion Barinitas    |');
-        writeln('|   ¿Hasta que estación quiere llegar?  |');
-        writeln('|    1. La montaña                      |');
+        writeln('|     Está en la estacion Barinitas     |');
+        writeln('|   ¿Hasta qué estación desea llegar?   |');
+        writeln('|    1. La Montaña                      |');
         writeln('|    2. La Aguada                       |');
         writeln('|    3. Loma Redonda                    |');
         writeln('|    4. Pico Espejo                     |');
@@ -101,13 +101,14 @@ precioAcumulado:= 0;
         readln(opMenuTramosStr);
         Val(opMenuTramosStr,opMenuTramos,errorMenuTramos);
         ClrScr;
-        if((errorMenuTramos<>0) or ((opMenuTramos<1) or (opMenuTramos>4))) then
+        if((errorMenuTramos<>0) and ((opMenuTramos<1) or (opMenuTramos>4))) then
           writeln('|--------------------------------------|');
           writeln('|                                      |');
           writeln('|       Ingrese una Opción Válida      |');
           writeln('|                                      |');
           writeln('|--------------------------------------|');   
         until((errorMenuTramos=0) and ((opMenuTramos>0) and (opMenuTramos<5)));
+        ClrScr;
         writeln('Ha selecconado la estación ',estacionesStr[opMenuTramos],' por lo que recorrerá ',opMenuTramos, ' estaciones');
         //Solicitar la informacion de cuantos boletos quiere comprar y de que tipo
         repeat
@@ -118,10 +119,10 @@ precioAcumulado:= 0;
             writeln('|    1. Boleto General: 5$ por tramo    |');
             writeln('|    2. Tercera edad y niños de         |');
             writeln('|       3 a 12 años: 3$ por tramo       |');
-            writeln('|    3. Niños menores de 3 años         |');
-            writeln('|       exonerados sin embargo, solo    |');
-            writeln('|       pueden subir hasta Loma Redonda |');
-            writeln('|    4. No deseo comprar mas            |');
+            writeln('|    3. Niños menores de 3 años son     |');
+            writeln('|       exonerados.  SOLO PUEDEN SUBIR  |');
+            writeln('|       HASTA LOMA REDONDA              |');
+            writeln('|    4. No deseo comprar más            |');
             writeln('|                                       |');
             writeln('|---------------------------------------|');
             readln(opMenuTipoBoletos);
@@ -156,7 +157,7 @@ precioAcumulado:= 0;
                   repeat     
                     writeln('|--------------------------------------|');
                     writeln('|                                      |');
-                    writeln('|     Ingrese una Cantidad Valida      |');
+                    writeln('|     Ingrese una Cantidad Válida      |');
                     writeln('|                                      |');
                     writeln('|--------------------------------------|');
                     readln(opMenuCantBoletosstr);
@@ -164,7 +165,7 @@ precioAcumulado:= 0;
                     ClrScr;
                   until(errorCantBoletos=0);
                   end;
-              if (opMenuCantBoletosint<asientosDisponibles) then
+              if (opMenuCantBoletosint<=asientosDisponibles) then
                 begin
                   precio:= opMenuCantBoletosint*opMenuTramos*precioboleto;
                   precioAcumulado:= precioAcumulado+precio;
@@ -235,7 +236,7 @@ precioAcumulado:= 0;
                   writeln('|--------------------------------------|');
                   writeln('|                                      |');
                   writeln('| La cantidad de asientos disponibles  |');
-                  writeln('|  Es:                                 |');
+                  writeln('| Es:                                  |');
                   writeln('|       ', asientosDisponibles,'                             |');
                   writeln('|--------------------------------------|');
                 end; 
