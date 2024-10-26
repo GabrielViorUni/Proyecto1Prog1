@@ -127,7 +127,7 @@ precioAcumulado:= 0;
           writeln('|--------------------------------------|');   
         until((errorMenuTramos=0) and ((opMenuTramos>0) and (opMenuTramos<5)));
         ClrScr;
-        writeln('Ha selecconado la estación ',estacionesStr[opMenuTramos],' por lo que recorrerá ',opMenuTramos, ' estacion/es');
+        writeln('Ha selecconado la estación ',estacionesStr[opMenuTramos],' por lo que recorrerá ',opMenuTramos, ' estación/es');
         //Solicitar la informacion de cuantos boletos quiere comprar y de que tipo
         repeat
           repeat
@@ -287,5 +287,5 @@ precioAcumulado:= 0;
       
     end;
   until(opMenuIni='3');
-  writeln(Ganancia:0:0);
+  writeln('Saliendo...¡Gracias por visitarnos!');
 end.
