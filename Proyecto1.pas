@@ -9,6 +9,9 @@ estacionesStr: array[1..4] of string;
 opMenuIni: string;
 //Datos del Usuario
 name, CI: string;
+CiInt: integer;
+CiError: integer;
+lenghtCI: integer;
 //Tramos
 opMenuTramos: Integer;
 opMenuTramosStr: String;
@@ -65,6 +68,7 @@ precioAcumulado:= 0;
     writeln('|                                      |');
     writeln('|--------------------------------------|');
     readln(opMenuIni);
+    clrscr;
     case (opMenuIni) of
     //Comprar Boleto
     '1':
@@ -84,18 +88,32 @@ precioAcumulado:= 0;
         writeln('|                                      |');
         writeln('|    Ingrese su Cédula de Identidad    |');
         writeln('|                                      |');
-        writeln('|--------------------------------------|');      
-        readln(CI);
+        writeln('|--------------------------------------|');
+        repeat      
+          readln(CI);
+          ClrScr;
+          val(CI,CiInt,CiError);
+          if ((Length(CI)>8)or(Length(CI)<7)or(CiError<>0)) then
+            begin
+                writeln('|--------------------------------------|');
+                writeln('|                                      |');
+                writeln('|      Ingrese una cedula válida       |');
+                writeln('|   (Entre 7 y 8 digitos sin letras    |');
+                writeln('|            ni puntos ".")            |');
+                writeln('|                                      |');
+                writeln('|--------------------------------------|');
+            end;
+        until ((Length(CI)<9)and(Length(CI)>6)and(CiError=0));
         ClrScr;
         //Solicitando a que estacion desea ir
         repeat
         writeln('|---------------------------------------|');
         writeln('|     Está en la estacion Barinitas     |');
         writeln('|   ¿Hasta qué estación desea llegar?   |');
-        writeln('|    1. La Montaña                      |');
-        writeln('|    2. La Aguada                       |');
-        writeln('|    3. Loma Redonda                    |');
-        writeln('|    4. Pico Espejo                     |');
+        writeln('|    1. La Montaña      (1 tramo )      |');
+        writeln('|    2. La Aguada       (2 tramos)      |');
+        writeln('|    3. Loma Redonda    (3 tramos)      |');
+        writeln('|    4. Pico Espejo     (4 tramos)      |');
         writeln('|                                       |');
         writeln('|---------------------------------------|');
         readln(opMenuTramosStr);
@@ -109,7 +127,7 @@ precioAcumulado:= 0;
           writeln('|--------------------------------------|');   
         until((errorMenuTramos=0) and ((opMenuTramos>0) and (opMenuTramos<5)));
         ClrScr;
-        writeln('Ha selecconado la estación ',estacionesStr[opMenuTramos],' por lo que recorrerá ',opMenuTramos, ' estaciones');
+        writeln('Ha selecconado la estación ',estacionesStr[opMenuTramos],' por lo que recorrerá ',opMenuTramos, ' estacion/es');
         //Solicitar la informacion de cuantos boletos quiere comprar y de que tipo
         repeat
           repeat
@@ -145,6 +163,7 @@ precioAcumulado:= 0;
               writeln('|                                      |');
               writeln('|   El teleférico tiene una capacidad  |');
               writeln('|        de 60 personas por viaje      |');
+              writeln('|        Asientos disponibles: ',asientosDisponibles,'      |');
               writeln('|    ¿Cuántos Boletos de este tipo     |');
               writeln('|            desea comprar?            |');
               writeln('|                                      |');
@@ -182,15 +201,17 @@ precioAcumulado:= 0;
                   Break;
                 end
 
-              else if (opMenuCantBoletosint > asientosDisponibles) then
+              else if ((opMenuCantBoletosint > asientosDisponibles) and (not(opMenuCantBoletosint>60))) then
                 begin
                   writeln('|--------------------------------------|');
                   writeln('|                                      |');
                   writeln('|   La cantidad de asientos a comprar  |');
                   writeln('|   no puede ser mayor a los asientos  |');
-                  writeln('|             disponibles.             |');
+                  writeln('|   disponibles, se iniciara el viaje, |');
+                  writeln('|   porfavor espere al proximo vagón.  |');
                   writeln('|                                      |');
-                  writeln('|--------------------------------------|');   
+                  writeln('|--------------------------------------|');
+                  asientosDisponibles:= 60;   
                 end;
             until (opMenuCantBoletosint < asientosDisponibles);
 
@@ -215,6 +236,7 @@ precioAcumulado:= 0;
             writeln('|                                       |');
             writeln('|---------------------------------------|');
             readln(opMenuVentas);
+            ClrScr;
               case (opMenuVentas) of
                 '1':
                 begin
@@ -236,8 +258,8 @@ precioAcumulado:= 0;
                   writeln('|--------------------------------------|');
                   writeln('|                                      |');
                   writeln('| La cantidad de asientos disponibles  |');
-                  writeln('| Es:                                  |');
-                  writeln('|       ', asientosDisponibles,'                             |');
+                  writeln('|               Es: ',asientosDisponibles,'                 |');
+                  writeln('|                                      |');
                   writeln('|--------------------------------------|');
                 end; 
                 '3':
