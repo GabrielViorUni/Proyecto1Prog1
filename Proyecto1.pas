@@ -217,6 +217,11 @@ precioAcumulado:= 0;
 
         until (opMenuTipoBoletos='4');
         writeln('El total a pagar es de ',precioAcumulado:0:0,'$');
+        writeln('|--------------------------------------|');
+        writeln('|                                      |');
+        writeln('|     El total a pagar es de: ',precioAcumulado:0:0,'$      |');
+        writeln('|                                      |');
+        writeln('|--------------------------------------|');
         Ganancia:= Ganancia+precioAcumulado;
         precioAcumulado:= 0;
       end;
@@ -287,5 +292,10 @@ precioAcumulado:= 0;
       
     end;
   until(opMenuIni='3');
-  writeln('Saliendo...¡Gracias por visitarnos!');
+  writeln('|--------------------------------------|');
+  writeln('|                                      |');
+  writeln('|  Saliendo...¡Gracias por visitarnos! |');
+  writeln('|                                      |');
+  writeln('|--------------------------------------|');
+  writeln('');
 end.
