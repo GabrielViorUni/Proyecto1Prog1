@@ -1,0 +1,157 @@
+Algoritmo ProyectoTeleferico
+	// Arreglos
+	Dimension estacionesStr[4]
+	Definir estacionesStr como texto
+	Definir opMenuIni Como Texto
+	// Datos del Usuario
+	Definir nombre, CI Como Texto
+	Definir CiInt, CiError, longitudCI Como Entero
+	// Tramos
+	Definir opMenuTramos Como Entero
+	Definir opMenuTramosStr Como Texto
+	Definir errorMenuTramos Como Entero
+	// Cantidad de boletos comprados
+	Definir boletos Como Entero
+	Definir opMenuCantBoletosStr Como Texto
+	Definir opMenuCantBoletosInt, precioBoleto, errorCantBoletos Como Entero
+	// Tipos de boletos
+	Definir tipoBoletoUno, tipoBoletoDos, tipoBoletoTres Como Entero
+	Definir opMenuTipoBoletos Como Texto
+	// Ganancia
+	Definir Ganancia, precio, precioAcumulado Como Real
+	// Menu ventas
+	Definir opMenuVentas Como Texto
+	// Asientos
+	Definir asientosDisponibles Como Entero
+	
+	// Inicializar el arreglo de estaciones
+	estacionesStr[1] <- "La montaña"
+	estacionesStr[2] <- "La Aguada"
+	estacionesStr[3] <- "Loma Redonda"
+	estacionesStr[4] <- "Pico Espejo"
+	
+	// Inicializar variables
+	Ganancia <- 0
+	asientosDisponibles <- 60
+	boletos <- 0
+	tipoBoletoUno <- 0
+	tipoBoletoDos <- 0
+	tipoBoletoTres <- 0
+	precio <- 0
+	precioAcumulado <- 0
+	
+	Repetir
+		// Menú inicial
+		Escribir "|--------------------------------------|"
+		Escribir "|  Bienvenido al Teleférico de Mérida  |"
+		Escribir "|           ¿Qué desea hacer?          |"
+		Escribir "|    1. Comprar Boleto                 |"
+		Escribir "|    2. Ver estado de Ventas           |"
+		Escribir "|    3. Salir                          |"
+		Escribir "|--------------------------------------|"
+		Leer opMenuIni
+		
+		Segun opMenuIni Hacer
+				// Comprar Boleto
+			Caso "1":
+				Escribir "Ingrese su Nombre y Apellido:"
+				Leer nombre
+				Escribir "Ingrese su Cédula de Identidad:"
+				Repetir
+					Leer CI
+					Si (Longitud(CI) < 7) O (Longitud(CI) > 8) Entonces
+						Escribir "Ingrese una cedula válida (7 u 8 dígitos)"
+					FinSi
+				Hasta Que (Longitud(CI) > 6) y (Longitud(CI) < 9)
+				
+				// Seleccionar estación de destino
+				Repetir
+					Escribir "¿Hasta qué estación desea llegar?"
+					Escribir "1. La Montaña      (1 tramo )"
+					Escribir "2. La Aguada       (2 tramos)"
+					Escribir "3. Loma Redonda    (3 tramos)"
+					Escribir "4. Pico Espejo     (4 tramos)"
+					Leer opMenuTramosStr
+					opMenuTramos <- ConvertirANumero(opMenuTramosStr)
+
+					Si (opMenuTramos < 1) O (opMenuTramos > 4) Entonces
+						Escribir "Ingrese una opción válida"
+					FinSi
+				Hasta Que No (opMenuTramos < 1) O (opMenuTramos > 4)
+				
+				// Seleccionar tipo y cantidad de boletos
+				Repetir
+					Escribir "¿Qué tipo de Boletos desea comprar?"
+					Escribir "1. Boleto General: 5$ por tramo"
+					Escribir "2. Tercera edad y niños (3 a 12 años): 3$ por tramo"
+					Escribir "3. Niños menores de 3 años (exonerados)"
+					Escribir "4. No deseo comprar más"
+					Leer opMenuTipoBoletos
+					
+					Segun opMenuTipoBoletos Hacer
+						Caso "1": precioBoleto <- 5
+						Caso "2": precioBoleto <- 3
+						Caso "3": precioBoleto <- 0
+					FinSegun
+					
+					Si opMenuTipoBoletos <> "4" Entonces
+						Escribir "¿Cuántos Boletos de este tipo desea comprar?"
+						Leer opMenuCantBoletosStr
+						opMenuCantBoletosInt <- ConvertirANumero(opMenuCantBoletosStr)
+						Si opMenuCantBoletosInt <= asientosDisponibles Entonces
+							precio <- opMenuCantBoletosInt * opMenuTramos * precioBoleto
+							precioAcumulado <- precioAcumulado + precio
+							asientosDisponibles <- asientosDisponibles - opMenuCantBoletosInt
+							boletos <- boletos + opMenuCantBoletosInt
+							
+							Segun opMenuTipoBoletos Hacer
+								Caso "1": tipoBoletoUno <- tipoBoletoUno + opMenuCantBoletosInt
+								Caso "2": tipoBoletoDos <- tipoBoletoDos + opMenuCantBoletosInt
+								Caso "3": tipoBoletoTres <- tipoBoletoTres + opMenuCantBoletosInt
+							FinSegun
+						Sino
+							Escribir "Asientos insuficientes, espere al próximo viaje"
+							asientosDisponibles <- 60
+						FinSi
+					FinSi
+				Hasta Que opMenuTipoBoletos = "4"
+				
+				Escribir "El total a pagar es de ", precioAcumulado, "$"
+				Ganancia <- Ganancia + precioAcumulado
+				precioAcumulado <- 0
+				
+				// Ver estado de ventas
+			Caso "2":
+				Repetir
+					Escribir "|--------------------------------------|"
+					Escribir "|            Estado de ventas          |"
+					Escribir "|    ¿Qué desea ver?                   |"
+					Escribir "|    1. Cantidad de boletos vendidos   |"
+					Escribir "|    2. Asientos disponibles           |"
+					Escribir "|    3. Reporte del día                |"
+					Escribir "|    4. Volver a menú inicial          |"
+					Escribir "|--------------------------------------|"
+					Leer opMenuVentas
+					
+					Segun opMenuVentas Hacer
+						Caso "1": 
+							Escribir "Boletos vendidos: ", boletos
+							Escribir "Boletos Generales: ", tipoBoletoUno
+							Escribir "Boletos Tercera Edad/Niños (3 a 12 años): ", tipoBoletoDos
+							Escribir "Boletos Niños (<3 años): ", tipoBoletoTres
+						Caso "2": 
+							Escribir "Asientos disponibles: ", asientosDisponibles
+						Caso "3": 
+							Escribir "Ganancia del día: ", Ganancia, "$"
+					FinSegun
+				Hasta Que opMenuVentas = "4"
+				
+				// Salir
+			Caso "3": 
+				Escribir" "
+			De Otro Modo: Escribir "Ingrese una opción válida"
+		FinSegun
+	Hasta Que opMenuIni = "3"
+	
+	Escribir "| Gracias por visitarnos |"
+FinAlgoritmo
